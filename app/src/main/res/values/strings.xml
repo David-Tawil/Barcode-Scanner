@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Barcode Scanner</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="price_textview">No info</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="barcodeLabel">Barcode</string>
+    <string name="barcodeDesc">Enter barcode here</string>
+    <string name="permission_required_text">\"Permission Required\"</string>
+
+    <string name="saved_last_updated_time_key">saved_last_updated_time_key</string>
+    <string name="saved_updated_date_label_key">saved_updated_date_label_key</string>
+
+    <string name="scan_barcode_heb">סרוק ברקוד</string>
+    <string name="scan_heb">סרוק</string>
+
+</resources>
