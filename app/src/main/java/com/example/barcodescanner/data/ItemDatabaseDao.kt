@@ -23,13 +23,6 @@ interface ItemDatabaseDao {
     fun update(item: Item)
 
     /**
-     * Selects and returns the row that matches the supplied start time, which is our key.
-     * @param key startTimeMilli to match
-     */
-    @Query("SELECT * from items_table WHERE code = :key")
-    fun get(key: String): Item?
-
-    /**
      * Deletes all values from the table.
      * This does not delete the table, only its contents.
      */
