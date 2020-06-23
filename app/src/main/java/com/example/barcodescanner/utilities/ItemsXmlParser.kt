@@ -79,7 +79,7 @@ class ItemsXmlParser {
                 else -> skip(parser)
             }
         }
-        return Item(code,barcode1,barcode2, name,vendor,cost,price)
+        return Item(null, code, barcode1, barcode2, name, vendor, cost, price)
     }
 
 
