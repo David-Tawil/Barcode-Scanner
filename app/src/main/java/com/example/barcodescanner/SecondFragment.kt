@@ -2,7 +2,11 @@ package com.example.barcodescanner
 
 import AppPermission
 import android.app.AlertDialog
+import android.content.Context.VIBRATOR_SERVICE
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.SurfaceHolder
@@ -30,6 +34,7 @@ class SecondFragment : Fragment() {
 
     private lateinit var cameraSource : CameraSource
     private lateinit var detector : BarcodeDetector
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,23 +87,39 @@ class SecondFragment : Fragment() {
     }
     // processor for barcode detector
     private val processor = object : Detector.Processor<Barcode>{
+        private var lastBarcode: String = ""
         override fun release() {
         }
-
         override fun receiveDetections(detections: Detector.Detections<Barcode>?) {
-            if(detections!= null && detections.detectedItems.isNotEmpty()) {
+            if (detections != null && detections.detectedItems.isNotEmpty()) {
                 val barcodes: SparseArray<Barcode> = detections.detectedItems
                 val barcode = barcodes.valueAt(0)
+                if (lastBarcode == barcode.rawValue) return // same barcode - ignore
+                lastBarcode = barcode.rawValue
+                //vibrate
+                when {
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ->
+                        (activity?.getSystemService(VIBRATOR_SERVICE) as Vibrator).vibrate(
+                            VibrationEffect.createPredefined(VibrationEffect.EFFECT_HEAVY_CLICK)
+                        )
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ->
+                        (activity?.getSystemService(VIBRATOR_SERVICE) as Vibrator).vibrate(
+                            VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE)
+                        )
+                    else ->
+                        (activity?.getSystemService(VIBRATOR_SERVICE) as Vibrator).vibrate(150)
+                }
 
                 val database = ItemDatabase.getInstance(requireContext()).itemDatabaseDao
-                val item: Item? = database.getBarcode2(barcode.rawValue) ?: database.getBarcode1(barcode.rawValue)
+                val item: Item? =
+                    database.getBarcode2(barcode.rawValue) ?: database.getBarcode1(barcode.rawValue)
 
-                val text = if(item!=null){
+                val text = if (item != null) {
                     """
                     קוד פריט: ${item.code}
                     ${item.name}
                     ספק: ${item.vendor}
-                    מחיר: ${item.price}
+                    מחיר: ${item.price}₪
                     """.trimIndent()
                 } else
                     "פריט לא נמצא"
