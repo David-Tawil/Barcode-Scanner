@@ -18,5 +18,7 @@
 
     <string name="scan_barcode_heb">סרוק ברקוד</string>
     <string name="scan_heb">סרוק</string>
+    <string name="cd_close_button">back</string>
+    <string name="cd_flash_button">flash button</string>
 
 </resources>

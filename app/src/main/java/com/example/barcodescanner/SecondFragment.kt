@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.util.isNotEmpty
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.barcodescanner.data.Item
 import com.example.barcodescanner.data.ItemDatabase
 import com.google.android.gms.vision.CameraSource
@@ -25,15 +26,16 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import handlePermission
 import handlePermissionsResult
 import kotlinx.android.synthetic.main.fragment_second.*
+import kotlinx.android.synthetic.main.top_action_bar.*
 import requestPermission
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class SecondFragment : Fragment() {
+class SecondFragment : Fragment(), View.OnClickListener {
 
-    private lateinit var cameraSource : CameraSource
-    private lateinit var detector : BarcodeDetector
+    private lateinit var cameraSource: CameraSource
+    private lateinit var detector: BarcodeDetector
 
 
     override fun onCreateView(
@@ -58,6 +60,8 @@ class SecondFragment : Fragment() {
 
             }
         )
+        close_button.setOnClickListener(this)
+        flash_button.setOnClickListener(this)
     }
 
     private fun setUpDetector() {
@@ -119,11 +123,14 @@ class SecondFragment : Fragment() {
                     קוד פריט: ${item.code}
                     ${item.name}
                     ספק: ${item.vendor}
-                    מחיר: ${item.price}₪
+                    מחיר: ₪${item.price}
                     """.trimIndent()
-                } else
-                    "פריט לא נמצא"
-
+                } else {
+                    """
+                        ${barcode.rawValue}
+                        פריט לא נמצא
+                    """.trimIndent()
+                }
                 textview_second.text = text
             }
         }
@@ -152,13 +159,20 @@ class SecondFragment : Fragment() {
     }
 
 
-    private fun createDialog(msg : String){
+    private fun createDialog(msg: String) {
         val builder = AlertDialog.Builder(context)
         builder.setMessage(msg)
-            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss()  }
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             .create().show()
     }
-    companion object{
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.close_button -> findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+        }
+    }
+
+    companion object {
         const val TAG = "SecondFragment"
     }
 }
