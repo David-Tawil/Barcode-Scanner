@@ -25,17 +25,21 @@ import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import handlePermission
 import handlePermissionsResult
-import kotlinx.android.synthetic.main.fragment_second.*
+import kotlinx.android.synthetic.main.fragment_camera_scanner.*
 import kotlinx.android.synthetic.main.top_action_bar.*
 import requestPermission
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class SecondFragment : Fragment(), View.OnClickListener {
+class CameraScannerFragment : Fragment(), View.OnClickListener {
 
     private lateinit var cameraSource: CameraSource
     private lateinit var detector: BarcodeDetector
+
+    companion object {
+        const val TAG = "CameraScannerFragment"
+    }
 
 
     override fun onCreateView(
@@ -43,12 +47,13 @@ class SecondFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_second, container, false)
+        return inflater.inflate(R.layout.fragment_camera_scanner, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Request camera permissions
         handlePermission(AppPermission.CAMERA,
             onGranted = {
                 setUpDetector()
@@ -60,8 +65,8 @@ class SecondFragment : Fragment(), View.OnClickListener {
 
             }
         )
+
         close_button.setOnClickListener(this)
-        flash_button.setOnClickListener(this)
     }
 
     private fun setUpDetector() {
@@ -101,6 +106,7 @@ class SecondFragment : Fragment(), View.OnClickListener {
                 if (lastBarcode == barcode.rawValue) return // same barcode - ignore
                 lastBarcode = barcode.rawValue
                 //vibrate
+                @Suppress("DEPRECATION")
                 when {
                     Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ->
                         (activity?.getSystemService(VIBRATOR_SERVICE) as Vibrator).vibrate(
@@ -123,18 +129,16 @@ class SecondFragment : Fragment(), View.OnClickListener {
                     קוד פריט: ${item.code}
                     ${item.name}
                     ספק: ${item.vendor}
-                    מחיר: ₪${item.price}
+                    מחיר: ${item.price}₪
                     """.trimIndent()
-                } else {
-                    """
-                        ${barcode.rawValue}
-                        פריט לא נמצא
-                    """.trimIndent()
-                }
+                } else
+                    "פריט לא נמצא"
+
                 textview_second.text = text
             }
         }
     }
+
 
     // take care of camera permission
     override fun onRequestPermissionsResult(
@@ -170,9 +174,5 @@ class SecondFragment : Fragment(), View.OnClickListener {
         when (v.id) {
             R.id.close_button -> findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
         }
-    }
-
-    companion object {
-        const val TAG = "SecondFragment"
     }
 }
