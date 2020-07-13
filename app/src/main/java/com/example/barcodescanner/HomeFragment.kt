@@ -30,7 +30,7 @@ class HomeFragment : Fragment() {
         view.findViewById<TextView>(R.id.textview_updated_Label).text = updatedLabel
 
         view.findViewById<Button>(R.id.button_first).setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            findNavController().navigate(R.id.action_HomeFragment_to_ScannerFragment)
         }
     }
 

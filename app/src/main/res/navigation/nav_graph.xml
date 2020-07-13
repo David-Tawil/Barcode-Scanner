@@ -8,27 +8,29 @@
     <fragment
         android:id="@+id/HomeFragment"
         android:name="com.example.barcodescanner.HomeFragment"
-        android:label="@string/first_fragment_label"
+        android:label="@string/home_fragment_label"
         tools:layout="@layout/fragment_home">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/CameraScannerFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
+            android:id="@+id/action_HomeFragment_to_ScannerFragment"
+            app:destination="@id/ScannerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:launchSingleTop="true" />
     </fragment>
     <fragment
-        android:id="@+id/CameraScannerFragment"
+        android:id="@+id/ScannerFragment"
         android:name="com.example.barcodescanner.ScannerFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_camera_scanner">
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/HomeFragment"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/HomeFragment"
-            app:popUpToInclusive="true" />
+        android:label="@string/scanner_fragment_label"
+        tools:layout="@layout/fragment_scanner">
+        <!--
+                <action
+                    android:id="@+id/action_ScannerFragment_to_HomeFragment"
+                    app:destination="@id/HomeFragment"
+                    app:launchSingleTop="true"
+                    app:popUpTo="@id/HomeFragment"
+                    app:popUpToInclusive="true" />-->
     </fragment>
 </navigation>

@@ -25,7 +25,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import handlePermission
 import handlePermissionsResult
-import kotlinx.android.synthetic.main.fragment_camera_scanner.*
+import kotlinx.android.synthetic.main.fragment_scanner.*
 import kotlinx.android.synthetic.main.top_action_bar.*
 import requestPermission
 
@@ -47,7 +47,7 @@ class ScannerFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_camera_scanner, container, false)
+        return inflater.inflate(R.layout.fragment_scanner, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -132,8 +132,10 @@ class ScannerFragment : Fragment(), View.OnClickListener {
                     מחיר: ${item.price}₪
                     """.trimIndent()
                 } else
-                    "פריט לא נמצא"
-
+                    """
+                        ${barcode.rawValue}
+                        פריט לא נמצא
+                    """.trimIndent()
                 textview_second.text = text
             }
         }
@@ -172,7 +174,7 @@ class ScannerFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.close_button -> findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+            R.id.close_button -> findNavController().navigateUp()
         }
     }
 }
