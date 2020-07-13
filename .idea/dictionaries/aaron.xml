@@ -2,6 +2,7 @@
   <dictionary name="aaron">
     <words>
       <w>barcodes</w>
+      <w>barcodescanner</w>
       <w>textview</w>
     </words>
   </dictionary>

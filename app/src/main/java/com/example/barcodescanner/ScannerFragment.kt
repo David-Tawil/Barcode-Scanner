@@ -32,7 +32,7 @@ import requestPermission
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class CameraScannerFragment : Fragment(), View.OnClickListener {
+class ScannerFragment : Fragment(), View.OnClickListener {
 
     private lateinit var cameraSource: CameraSource
     private lateinit var detector: BarcodeDetector
