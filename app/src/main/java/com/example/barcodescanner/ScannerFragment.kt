@@ -105,7 +105,7 @@ class ScannerFragment : Fragment(), View.OnClickListener {
                 lastBarcode = barcode.rawValue
                 val rawValue: String =
                     if (barcode.rawValue.startsWith("]C1")) barcode.rawValue.substring(3) else barcode.rawValue
-                //vibrate
+
                 vibrate(activity)
                 MediaPlayer.create(requireContext(), R.raw.barcode_beep).start()
 
