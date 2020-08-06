@@ -39,6 +39,7 @@ class ScannerFragment : Fragment(), View.OnClickListener {
 
     companion object {
         const val TAG = "CameraScannerFragment"
+        const val VAT = 1.17
     }
 
 
@@ -123,19 +124,19 @@ class ScannerFragment : Fragment(), View.OnClickListener {
                 val database = ItemDatabase.getInstance(requireContext()).itemDatabaseDao
                 val item: Item? =
                     database.getBarcode2(barcode.rawValue) ?: database.getBarcode1(barcode.rawValue)
-
-                val text = if (item != null) {
-                    """
-                    קוד פריט: ${item.code}
-                    ${item.name}
-                    ספק: ${item.vendor}
-                    מחיר: ${item.price}₪
-                    """.trimIndent()
-                } else
-                    """
-                        ${barcode.rawValue}
-                        פריט לא נמצא
-                    """.trimIndent()
+                var profit: Double? = null
+                if (item != null) {
+                    if (item.cost != null && item.price != null)
+                        profit = (item.price - item.cost * VAT) / item.price
+                }
+                val text = item?.toString()?.plus(
+                    if (profit != null) "\nרווח ${String.format("%.2f", profit * 100)
+                        .toDouble()}%" else ""
+                )
+                    ?: """
+                                    ${barcode.rawValue}
+                                    פריט לא נמצא
+                                """.trimIndent()
                 textview_second.text = text
             }
         }
