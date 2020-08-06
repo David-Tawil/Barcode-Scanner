@@ -139,6 +139,8 @@ class ScannerFragment : Fragment(), View.OnClickListener {
                                     $rawValue
                                     פריט לא נמצא
                                 """.trimIndent()
+
+                textview_second.text = text
             }
         }
     }

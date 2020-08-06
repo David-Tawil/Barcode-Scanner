@@ -36,7 +36,7 @@ data class Item (
                     קוד פריט: $code
                     $name
                     ספק: $vendor
-                     עלות:${cost}₪
+                     עלות:${String.format("%.2f", cost)}₪
                     מחיר: ${price}₪
                     """.trimIndent()
     }
