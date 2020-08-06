@@ -23,12 +23,24 @@ data class Item (
     val name: String? = "ללא שם",
 
     @ColumnInfo(name = "vendor")
-    val vendor : String? ="לא משויך לספק",
+    val vendor: String? = "לא משויך לספק",
 
     @ColumnInfo(name = "cost")
-    val cost : Double? = 0.0,
+    val cost: Double? = 0.0,
 
     @ColumnInfo(name = "price")
-    val price : Double? = 0.0
-)
+    val price: Double? = 0.0
+) {
+    override fun toString(): String {
+        return """
+                    קוד פריט: $code
+                    $name
+                    ספק: $vendor
+                     עלות:${cost}₪
+                    מחיר: ${price}₪
+                    """.trimIndent()
+    }
+}
+
+
 

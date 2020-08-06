@@ -105,6 +105,8 @@ class ScannerFragment : Fragment(), View.OnClickListener {
                 val barcode = barcodes.valueAt(0)
                 if (lastBarcode == barcode.rawValue) return // same barcode - ignore
                 lastBarcode = barcode.rawValue
+                val rawValue: String =
+                    if (barcode.rawValue.startsWith("]C1")) barcode.rawValue.substring(3) else barcode.rawValue
                 //vibrate
                 @Suppress("DEPRECATION")
                 when {
@@ -122,7 +124,7 @@ class ScannerFragment : Fragment(), View.OnClickListener {
 
                 val database = ItemDatabase.getInstance(requireContext()).itemDatabaseDao
                 val item: Item? =
-                    database.getBarcode2(barcode.rawValue) ?: database.getBarcode1(barcode.rawValue)
+                    database.getBarcode2(rawValue) ?: database.getBarcode1(rawValue)
 
                 val text = if (item != null) {
                     """
@@ -133,7 +135,7 @@ class ScannerFragment : Fragment(), View.OnClickListener {
                     """.trimIndent()
                 } else
                     """
-                        ${barcode.rawValue}
+                        $rawValue
                         פריט לא נמצא
                     """.trimIndent()
                 textview_second.text = text
