@@ -30,17 +30,7 @@ data class Item (
 
     @ColumnInfo(name = "price")
     val price: Double? = 0.0
-) {
-    override fun toString(): String {
-        return """
-                    קוד פריט: $code
-                    $name
-                    ספק: $vendor
-                     עלות:${cost}₪
-                    מחיר: ${price}₪
-                    """.trimIndent()
-    }
-}
+)
 
 
 
