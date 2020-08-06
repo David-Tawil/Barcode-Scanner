@@ -2,11 +2,8 @@ package com.example.barcodescanner
 
 import AppPermission
 import android.app.AlertDialog
-import android.content.Context.VIBRATOR_SERVICE
-import android.os.Build
+import android.media.MediaPlayer
 import android.os.Bundle
-import android.os.VibrationEffect
-import android.os.Vibrator
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.SurfaceHolder
@@ -18,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.barcodescanner.data.Item
 import com.example.barcodescanner.data.ItemDatabase
+import com.example.barcodescanner.utilities.vibrate
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
@@ -108,20 +106,9 @@ class ScannerFragment : Fragment(), View.OnClickListener {
                 lastBarcode = barcode.rawValue
                 val rawValue: String =
                     if (barcode.rawValue.startsWith("]C1")) barcode.rawValue.substring(3) else barcode.rawValue
-                //vibrate
-                @Suppress("DEPRECATION")
-                when {
-                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ->
-                        (activity?.getSystemService(VIBRATOR_SERVICE) as Vibrator).vibrate(
-                            VibrationEffect.createPredefined(VibrationEffect.EFFECT_HEAVY_CLICK)
-                        )
-                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ->
-                        (activity?.getSystemService(VIBRATOR_SERVICE) as Vibrator).vibrate(
-                            VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE)
-                        )
-                    else ->
-                        (activity?.getSystemService(VIBRATOR_SERVICE) as Vibrator).vibrate(150)
-                }
+
+                vibrate(activity)
+                MediaPlayer.create(requireContext(), R.raw.barcode_beep).start()
 
                 val database = ItemDatabase.getInstance(requireContext()).itemDatabaseDao
                 val item: Item? =
