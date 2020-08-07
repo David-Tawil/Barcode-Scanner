@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.barcodescanner.data.Item
 import com.example.barcodescanner.data.ItemDatabase
+import com.example.barcodescanner.utilities.turnOffFlashLight
+import com.example.barcodescanner.utilities.turnOnFlashLight
 import com.example.barcodescanner.utilities.vibrate
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
@@ -50,7 +52,6 @@ class ScannerFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         // Request camera permissions
         handlePermission(AppPermission.CAMERA,
             onGranted = {
@@ -63,7 +64,7 @@ class ScannerFragment : Fragment(), View.OnClickListener {
 
             }
         )
-
+        flash_button.setOnClickListener(this)
         close_button.setOnClickListener(this)
     }
 
@@ -164,6 +165,22 @@ class ScannerFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.close_button -> findNavController().navigateUp()
+            R.id.flash_button -> {
+                flash_button.let {
+                    if (it.isSelected) {
+                        it.isSelected = false
+                        turnOffFlashLight(cameraSource)
+                    } else {
+                        it.isSelected = true
+                        turnOnFlashLight(cameraSource)
+                    }
+                }
+            }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        flash_button.isSelected = false
     }
 }
