@@ -22,7 +22,6 @@ import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import handlePermission
 import handlePermissionsResult
 import kotlinx.android.synthetic.main.fragment_scanner.*
@@ -70,8 +69,9 @@ class ScannerFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setUpDetector() {
-        detector = BarcodeDetector.Builder(requireActivity()).setBarcodeFormats( FirebaseVisionBarcode.FORMAT_ALL_FORMATS).build()
-        cameraSource = CameraSource.Builder(requireActivity(),detector)
+        detector = BarcodeDetector.Builder(requireActivity()).setBarcodeFormats(Barcode.ALL_FORMATS)
+            .build()
+        cameraSource = CameraSource.Builder(requireActivity(), detector)
             .setAutoFocusEnabled(true).build()
         cameraSurfaceView.holder.addCallback(surfaceCallback)
         detector.setProcessor(processor)
