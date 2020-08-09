@@ -115,12 +115,21 @@ class ScannerFragment : Fragment(), View.OnClickListener {
                 val itemList: List<Item>? =
                     database.getBarcode2(rawValue) ?: database.getBarcode1(rawValue)
                 val item: Item? = itemList?.get(0)
+
+                var profit: Double = 0.0
+                if (item != null) {
+                    if (item.cost != null && item.price != null)
+                        profit = (item.price - item.cost * VAT) / item.price
+                }
+
+
                 val text = if (item != null) {
                     """
                     קוד פריט: ${item.code}
                     ${item.name}
                     ספק: ${item.vendor}
-                    מחיר: ${item.price}₪
+                    עלות: ${item.cost}₪ מכירה: ${item.price}₪ 
+                    רווח: ${String.format("%.2f", profit * 100).toDouble()}%
                     מלאי חנות: ${itemList.find { it.storage == 1 }?.quantity ?: 0}
                     """.trimIndent()
                 } else
