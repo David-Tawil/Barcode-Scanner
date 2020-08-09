@@ -16,31 +16,27 @@ data class Item (
     @ColumnInfo(name = "barcode1")
     val barcode1: String? = "",
 
-    @ColumnInfo(name = "barcode2")
-    val barcode2: String? = "",
+    @ColumnInfo(name = "barcode2", defaultValue = "")
+    val barcode2: String?,
 
-    @ColumnInfo(name = "name")
-    val name: String? = "ללא שם",
+    @ColumnInfo(name = "name", defaultValue = "ללא שם")
+    val name: String?,
 
-    @ColumnInfo(name = "vendor")
-    val vendor: String? = "לא משויך לספק",
+    @ColumnInfo(name = "vendor", defaultValue = "לא משויך לספק")
+    val vendor: String?,
 
-    @ColumnInfo(name = "cost")
-    val cost: Double? = 0.0,
+    @ColumnInfo(name = "cost", defaultValue = "0.0")
+    val cost: Double?,
 
-    @ColumnInfo(name = "price")
-    val price: Double? = 0.0
-) {
-    override fun toString(): String {
-        return """
-                    קוד פריט: $code
-                    $name
-                    ספק: $vendor
-                     עלות:${String.format("%.2f", cost)}₪
-                    מחיר: ${price}₪
-                    """.trimIndent()
-    }
-}
+    @ColumnInfo(name = "price", defaultValue = "0.0")
+    val price: Double?,
+
+    @ColumnInfo(name = "storage", defaultValue = "0")
+    val storage: Int?,
+
+    @ColumnInfo(name = "quantity", defaultValue = "0")
+    val quantity: Int?
+)
 
 
 

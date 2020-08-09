@@ -112,8 +112,22 @@ class ScannerFragment : Fragment(), View.OnClickListener {
                 MediaPlayer.create(requireContext(), R.raw.barcode_beep).start()
 
                 val database = ItemDatabase.getInstance(requireContext()).itemDatabaseDao
-                val item: Item? =
+                val itemList: List<Item>? =
                     database.getBarcode2(rawValue) ?: database.getBarcode1(rawValue)
+                val item: Item? = itemList?.get(0)
+                val text = if (item != null) {
+                    """
+                    קוד פריט: ${item.code}
+                    ${item.name}
+                    ספק: ${item.vendor}
+                    מחיר: ${item.price}₪
+                    מלאי חנות: ${itemList.find { it.storage == 1 }?.quantity ?: 0}
+                    """.trimIndent()
+                } else
+                    """
+                        $rawValue
+                        פריט לא נמצא
+                    """.trimIndent()
                 var profit: Double? = null
                 if (item != null) {
                     if (item.cost != null && item.price != null)

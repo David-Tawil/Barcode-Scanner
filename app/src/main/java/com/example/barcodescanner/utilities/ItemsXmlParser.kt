@@ -15,12 +15,14 @@ const val NAME = "name"
 const val VENDOR = "vendor"
 const val COST = "cost"
 const val PRICE = "price"
+const val STORAGE = "storage"
+const val QUANTITY = "quantity"
 
 const val ROOT_ENTRY = "Root"
 const val ITEM_ENTRY = "item"
 
 class ItemsXmlParser {
-    
+
     //omit namespaces
     private val ns: String? = null
 
@@ -58,12 +60,14 @@ class ItemsXmlParser {
     private fun readEntry(parser: XmlPullParser): Item {
         parser.require(XmlPullParser.START_TAG, ns, ITEM_ENTRY)
         var code = ""
-        var barcode1 :String? = null
-        var barcode2 :String? = null
+        var barcode1: String? = null
+        var barcode2: String? = null
         var name: String? = null
         var vendor: String? = null
-        var cost:Double? = null
+        var cost: Double? = null
         var price: Double? = null
+        var storage: Int? = null
+        var quantity: Int? = null
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) {
                 continue
@@ -76,10 +80,12 @@ class ItemsXmlParser {
                 VENDOR -> vendor = readVendor(parser)
                 COST -> cost = readCost(parser)
                 PRICE -> price = readPrice(parser)
+                STORAGE -> storage = readStorage(parser)
+                QUANTITY -> quantity = readQuantity(parser)
                 else -> skip(parser)
             }
         }
-        return Item(null, code, barcode1, barcode2, name, vendor, cost, price)
+        return Item(null, code, barcode1, barcode2, name, vendor, cost, price, storage, quantity)
     }
 
 
@@ -133,15 +139,27 @@ class ItemsXmlParser {
 
     @Throws(XmlPullParserException::class, IOException::class)
     private fun readPrice(parser: XmlPullParser): Double? {
-        parser.require(XmlPullParser.START_TAG,ns,PRICE)
+        parser.require(XmlPullParser.START_TAG, ns, PRICE)
         val price = readText(parser).toDoubleOrNull()
-        parser.require(XmlPullParser.END_TAG,ns,PRICE)
+        parser.require(XmlPullParser.END_TAG, ns, PRICE)
         return price
     }
 
+    @Throws(XmlPullParserException::class, IOException::class)
+    private fun readStorage(parser: XmlPullParser): Int? {
+        parser.require(XmlPullParser.START_TAG, ns, STORAGE)
+        val storage = readText(parser).toIntOrNull()
+        parser.require(XmlPullParser.END_TAG, ns, STORAGE)
+        return storage
+    }
 
-
-
+    @Throws(XmlPullParserException::class, IOException::class)
+    private fun readQuantity(parser: XmlPullParser): Int? {
+        parser.require(XmlPullParser.START_TAG, ns, QUANTITY)
+        val quantity = readText(parser).toIntOrNull()
+        parser.require(XmlPullParser.END_TAG, ns, QUANTITY)
+        return quantity
+    }
 
 
     // extracts data of required tags
