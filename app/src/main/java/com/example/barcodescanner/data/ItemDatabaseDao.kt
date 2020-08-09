@@ -40,9 +40,9 @@ interface ItemDatabaseDao {
     fun countItems() : Int?
 
     @Query("SELECT * FROM items_table WHERE barcode1= :barcode")
-    fun getBarcode1(barcode :String):Item?
+    fun getBarcode1(barcode: String): List<Item>?
 
     @Query("SELECT * FROM items_table WHERE barcode2= :barcode")
-    fun getBarcode2(barcode :String):Item?
+    fun getBarcode2(barcode: String): List<Item>?
 
 }
