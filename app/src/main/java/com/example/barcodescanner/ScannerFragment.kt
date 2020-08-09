@@ -128,19 +128,6 @@ class ScannerFragment : Fragment(), View.OnClickListener {
                         $rawValue
                         פריט לא נמצא
                     """.trimIndent()
-                var profit: Double? = null
-                if (item != null) {
-                    if (item.cost != null && item.price != null)
-                        profit = (item.price - item.cost * VAT) / item.price
-                }
-                val text = item?.toString()?.plus(
-                    if (profit != null) "\nרווח ${String.format("%.2f", profit * 100)
-                        .toDouble()}%" else ""
-                )
-                    ?: """
-                                    $rawValue
-                                    פריט לא נמצא
-                                """.trimIndent()
 
                 textview_second.text = text
             }
