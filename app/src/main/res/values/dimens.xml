@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="design_fab_image_size" tools:override="true">100dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="home_page_title_size">18sp</dimen>
     <dimen name="home_page_title_padding_top">32dp</dimen>
