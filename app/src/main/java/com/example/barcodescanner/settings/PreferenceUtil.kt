@@ -14,6 +14,9 @@ object PreferenceUtil {
     fun isVibrationEnabled(context: Context): Boolean =
         getBooleanPref(context, R.string.pref_key_enable_vibration, true)
 
+    fun isCostEnabled(context: Context): Boolean =
+        getBooleanPref(context, R.string.pref_key_enable_cost, false)
+
 
     private fun getBooleanPref(
         context: Context,

@@ -13,4 +13,10 @@
         android:persistent="true"
         android:title="@string/pref_title_enable_vibration" />
 
+    <androidx.preference.SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="@string/pref_key_enable_cost"
+        android:persistent="true"
+        android:title="@string/pref_title_enable_cost" />
+
 </androidx.preference.PreferenceScreen>

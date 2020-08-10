@@ -15,15 +15,8 @@
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="-16dp" />
 
-    <View
-        android:id="@+id/viewDivider"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@id/textview_second" />
-
     <TextView
-        android:id="@+id/textview_second"
+        android:id="@+id/textview_item_dexcription"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginBottom="10dp"
@@ -40,6 +33,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="קוד פריט: 7290010779947\nמחיר: 99.9"
         tools:visibility="visible" />
+
+    <View
+        android:id="@+id/viewDivider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/textview_item_dexcription" />
 
     <include
         layout="@layout/top_action_bar"

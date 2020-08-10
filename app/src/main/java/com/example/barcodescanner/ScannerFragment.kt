@@ -27,6 +27,7 @@ import handlePermissionsResult
 import kotlinx.android.synthetic.main.fragment_scanner.*
 import kotlinx.android.synthetic.main.top_action_bar.*
 import requestPermission
+import java.text.DecimalFormat
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -122,27 +123,46 @@ class ScannerFragment : Fragment(), View.OnClickListener {
                 } else
                     database.getBarcode2(rawValue)
 
-                val item: Item? = if (itemList.isNotEmpty()) itemList[0] else null
+                val text = setText(itemList, rawValue)
 
-                val text = if (item != null) {
-                    """
-                    קוד פריט: ${item.code}
-                    ${item.name}
-                    ספק: ${item.vendor}
-                    מחיר: ${item.price}₪
-                    מלאי חנות: ${itemList.find { it.storage == 1 }?.quantity ?: 0}
-                    """.trimIndent()
-                } else
-                    """
-                        $rawValue
-                        פריט לא נמצא
-                    """.trimIndent()
-
-                textview_second.text = text
+                textview_item_dexcription.text = text
             }
         }
     }
 
+    private fun setText(itemList: List<Item>, rawValue: String): String {
+        if (itemList.isEmpty())
+            return """
+                        $rawValue
+                        פריט לא נמצא
+                    """.trimIndent()
+        else {
+            val item = itemList[0]
+            var profit = 0.0
+            if (item.cost != null && item.price != null) {
+                profit = (item.price - item.cost * VAT) / item.price
+            }
+            val df = DecimalFormat(".00")
+
+            var text: String = """
+                    קוד פריט: ${item.code}
+                    ${item.name}
+                    ספק: ${item.vendor}
+                    
+                    """.trimIndent()
+            text += if (PreferenceUtil.isCostEnabled(requireContext())) {
+                """
+                            עלות: ₪${df.format(item.cost)} מכירה: ₪${df.format(item.price)}
+                            רווח: ${df.format(profit * 100)}%
+                            
+                        """.trimIndent()
+            } else
+                " מחיר: ₪${df.format(item.price)}\n"
+
+            text += "מלאי חנות: ${itemList.find { it.storage == 1 }?.quantity ?: 0}"
+            return text
+        }
+    }
 
     // take care of camera permission
     override fun onRequestPermissionsResult(

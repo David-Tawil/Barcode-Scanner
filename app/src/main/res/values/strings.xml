@@ -1,16 +1,11 @@
 <resources>
     <string name="app_name">Barcode Scanner</string>
-    <string name="action_settings">הגדרות</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="home_fragment_label">Home Fragment</string>
     <string name="scanner_fragment_label">Scanner Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="price_textview">No info</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="barcodeLabel">Barcode</string>
-    <string name="barcodeDesc">Enter barcode here</string>
+
     <string name="permission_required_text">\"Permission Required\"</string>
 
     <string name="saved_last_updated_time_key">saved_last_updated_time_key</string>
@@ -18,12 +13,24 @@
 
     <string name="scan_barcode_heb">סרוק ברקוד</string>
     <string name="scan_heb">סרוק</string>
+
+    <!--    scanner fragment action bar-->
     <string name="cd_close_button">back</string>
     <string name="cd_flash_button">flash button</string>
+
+    <!--    menu-->
+    <string name="action_settings">הגדרות</string>
+
+    <!--    settings-->
+    <string name="settings_title">Settings</string>
+
     <string name="pref_key_enable_sound">sound</string>
     <string name="pref_title_enable_sound">צליל קופה</string>
-    <string name="settings_title">Settings</string>
+
     <string name="pref_key_enable_vibration">vibration</string>
     <string name="pref_title_enable_vibration">רטט</string>
+
+    <string name="pref_key_enable_cost">cost</string>
+    <string name="pref_title_enable_cost">כולל עלות ורווח</string>
 
 </resources>
