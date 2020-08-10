@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> {
                 startActivity(Intent(this, SettingsActivity::class.java))
-                true
+                return true
             }
             else -> super.onOptionsItemSelected(item)
         }
