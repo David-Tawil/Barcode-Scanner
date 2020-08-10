@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.preference.SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="@string/pref_key_enable_sound"
+        android:persistent="true"
+        android:title="@string/pref_title_enable_sound" />
+
+    <androidx.preference.SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="@string/pref_key_enable_vibration"
+        android:persistent="true"
+        android:title="@string/pref_title_enable_vibration" />
+
+</androidx.preference.PreferenceScreen>

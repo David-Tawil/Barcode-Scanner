@@ -15,9 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.barcodescanner.data.Item
 import com.example.barcodescanner.data.ItemDatabase
-import com.example.barcodescanner.utilities.turnOffFlashLight
-import com.example.barcodescanner.utilities.turnOnFlashLight
-import com.example.barcodescanner.utilities.vibrate
+import com.example.barcodescanner.data.ItemDatabaseDao
+import com.example.barcodescanner.settings.PreferenceUtil
+import com.example.barcodescanner.utilities.UtilTools
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
@@ -35,6 +35,7 @@ class ScannerFragment : Fragment(), View.OnClickListener {
 
     private lateinit var cameraSource: CameraSource
     private lateinit var detector: BarcodeDetector
+    private lateinit var database: ItemDatabaseDao
 
     companion object {
         const val TAG = "CameraScannerFragment"
@@ -52,8 +53,11 @@ class ScannerFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        database = ItemDatabase.getInstance(requireContext()).itemDatabaseDao
         // Request camera permissions
-        handlePermission(AppPermission.CAMERA,
+        handlePermission(
+            AppPermission.CAMERA,
             onGranted = {
                 setUpDetector()
             },
@@ -108,13 +112,18 @@ class ScannerFragment : Fragment(), View.OnClickListener {
                 val rawValue: String =
                     if (barcode.rawValue.startsWith("]C1")) barcode.rawValue.substring(3) else barcode.rawValue
 
-                vibrate(activity)
-                MediaPlayer.create(requireContext(), R.raw.barcode_beep).start()
+                if (PreferenceUtil.isVibrationEnabled(requireContext()))
+                    UtilTools.vibrate(activity)
+                if (PreferenceUtil.isSoundEnabled(requireContext()))
+                    MediaPlayer.create(requireContext(), R.raw.barcode_beep).start()
 
-                val database = ItemDatabase.getInstance(requireContext()).itemDatabaseDao
-                val itemList: List<Item>? =
-                    database.getBarcode2(rawValue) ?: database.getBarcode1(rawValue)
-                val item: Item? = itemList?.get(0)
+                val itemList: List<Item> = if (database.getBarcode2(rawValue).isEmpty()) {
+                    database.getBarcode1(rawValue)
+                } else
+                    database.getBarcode2(rawValue)
+
+                val item: Item? = if (itemList.isNotEmpty()) itemList[0] else null
+
                 val text = if (item != null) {
                     """
                     קוד פריט: ${item.code}
@@ -172,10 +181,10 @@ class ScannerFragment : Fragment(), View.OnClickListener {
                 flash_button.let {
                     if (it.isSelected) {
                         it.isSelected = false
-                        turnOffFlashLight(cameraSource)
+                        UtilTools.turnOffFlashLight(cameraSource)
                     } else {
                         it.isSelected = true
-                        turnOnFlashLight(cameraSource)
+                        UtilTools.turnOnFlashLight(cameraSource)
                     }
                 }
             }
@@ -186,4 +195,6 @@ class ScannerFragment : Fragment(), View.OnClickListener {
         super.onResume()
         flash_button.isSelected = false
     }
+
+
 }
