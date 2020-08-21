@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="entries_values_theme_mode">
+        <item>dark</item>
+        <item>light</item>
+        <item>auto</item>
+    </string-array>
+    <string-array name="entries_theme_mode">
+        <item>מצב כהה</item>
+        <item>מצב בהיר</item>
+        <item>מערכת(אוטומטי)</item>
+    </string-array>
+    <string-array name="order_by_options">
+        <item>שם פריט</item>
+        <item>קוד פריט</item>
+        <item>מחיר עלות</item>
+        <item>מחיר מכירה</item>
+    </string-array>
+</resources>

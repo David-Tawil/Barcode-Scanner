@@ -1,9 +1,9 @@
 package com.example.barcodescanner
 
-import AppPermission
 import android.app.AlertDialog
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.SurfaceHolder
@@ -12,21 +12,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.util.isNotEmpty
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.example.barcodescanner.data.Item
 import com.example.barcodescanner.data.ItemDatabase
 import com.example.barcodescanner.data.ItemDatabaseDao
 import com.example.barcodescanner.settings.PreferenceUtil
+import com.example.barcodescanner.utilities.TAG
 import com.example.barcodescanner.utilities.UtilTools
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
-import handlePermission
 import handlePermissionsResult
 import kotlinx.android.synthetic.main.fragment_scanner.*
-import kotlinx.android.synthetic.main.top_action_bar.*
-import requestPermission
+import kotlinx.android.synthetic.main.scanner_action_bar.*
 import java.text.DecimalFormat
 
 /**
@@ -37,11 +35,7 @@ class ScannerFragment : Fragment(), View.OnClickListener {
     private lateinit var cameraSource: CameraSource
     private lateinit var detector: BarcodeDetector
     private lateinit var database: ItemDatabaseDao
-
-    companion object {
-        const val TAG = "CameraScannerFragment"
-        const val VAT = 1.17
-    }
+    private lateinit var item: Item
 
 
     override fun onCreateView(
@@ -56,21 +50,29 @@ class ScannerFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         database = ItemDatabase.getInstance(requireContext()).itemDatabaseDao
-        // Request camera permissions
-        handlePermission(
-            AppPermission.CAMERA,
-            onGranted = {
-                setUpDetector()
-            },
-            onDenied = {
-                requestPermission(AppPermission.CAMERA)
-            },
-            onRationaleNeeded = {
 
-            }
-        )
+        // item = Item(null,"error",null,null,null,null,null,null,null,null)
+
+        /* handlePermission(
+             AppPermission.CAMERA,
+             onGranted = {
+                 setUpDetector()
+             },
+             onDenied = {
+                 requestPermission(AppPermission.CAMERA)
+             },
+             onRationaleNeeded = {
+
+             }
+         )*/
+        while (!UtilTools.allPermissionsGranted(requireContext())) {
+            UtilTools.requestRuntimePermissions(requireActivity())
+        }
+        setUpDetector()
+        camera_surface_view.visibility = View.VISIBLE
+
+        button_details.setOnClickListener(this)
         flash_button.setOnClickListener(this)
-        close_button.setOnClickListener(this)
     }
 
     private fun setUpDetector() {
@@ -78,7 +80,7 @@ class ScannerFragment : Fragment(), View.OnClickListener {
             .build()
         cameraSource = CameraSource.Builder(requireActivity(), detector)
             .setAutoFocusEnabled(true).build()
-        cameraSurfaceView.holder.addCallback(surfaceCallback)
+        camera_surface_view.holder.addCallback(surfaceCallback)
         detector.setProcessor(processor)
     }
     // callback for camera surface
@@ -118,63 +120,64 @@ class ScannerFragment : Fragment(), View.OnClickListener {
                 if (PreferenceUtil.isSoundEnabled(requireContext()))
                     MediaPlayer.create(requireContext(), R.raw.barcode_beep).start()
 
-                val itemList: List<Item> = if (database.getBarcode2(rawValue).isEmpty()) {
-                    database.getBarcode1(rawValue)
+                val itemList: List<Item> = if (database.getItemBarcode2(rawValue).isEmpty()) {
+                    database.getItemBarcode1(rawValue)
                 } else
-                    database.getBarcode2(rawValue)
+                    database.getItemBarcode2(rawValue)
 
-                val text = setText(itemList, rawValue)
+                val item: Item? = if (itemList.isEmpty()) null else itemList[0]
 
-                textview_item_dexcription.text = text
+                setInfoUi(item, rawValue)
             }
         }
     }
 
-    private fun setText(itemList: List<Item>, rawValue: String): String {
-        if (itemList.isEmpty())
-            return """
-                        $rawValue
-                        פריט לא נמצא
-                    """.trimIndent()
-        else {
-            val item = itemList[0]
-            var profit = 0.0
-            if (item.cost != null && item.price != null) {
-                profit = (item.price - item.cost * VAT) / item.price
+    private fun setInfoUi(item: Item?, rawValue: String) {
+        if (item == null) {
+            requireActivity().runOnUiThread {
+                code_scanner_item_info.text = rawValue
+                divider_code_name.visibility = View.VISIBLE
+                name_scanner_item_info.text = resources.getString(R.string.item_not_found)
+                divider_name_price.visibility = View.GONE
+                price_scanner_item_info.text = ""
+                inventory_scanner_item_info.visibility = View.GONE
+                button_details.visibility = View.GONE
             }
-            val df = DecimalFormat(".00")
-
-            var text: String = """
-                    קוד פריט: ${item.code}
-                    ${item.name}
-                    ספק: ${item.vendor}
-                    
-                    """.trimIndent()
-            text += if (PreferenceUtil.isCostEnabled(requireContext())) {
-                """
-                            עלות: ₪${df.format(item.cost)} מכירה: ₪${df.format(item.price)}
-                            רווח: ${df.format(profit * 100)}%
-                            
-                        """.trimIndent()
-            } else
-                " מחיר: ₪${df.format(item.price)}\n"
-
-            text += "מלאי חנות: ${itemList.find { it.storage == 1 }?.quantity ?: 0}"
-            return text
+            return
+        }
+        this@ScannerFragment.item = item
+        requireActivity().runOnUiThread {
+            code_scanner_item_info.text = rawValue
+            divider_code_name.visibility = View.VISIBLE
+            name_scanner_item_info.text = item.name
+            Log.d(TAG, "${name_scanner_item_info.text}")
+            divider_name_price.visibility = View.VISIBLE
+            price_scanner_item_info.text = resources.getString(
+                R.string.price_item_scanner_info,
+                DecimalFormat("0.00").format(item.price)
+            )
+            inventory_scanner_item_info.text =
+                resources.getString(R.string.inventory_info, database.getInventory(item.code, 1))
+            inventory_scanner_item_info.visibility = View.VISIBLE
+            button_details.visibility = View.VISIBLE
         }
     }
+
 
     // take care of camera permission
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
-    )
-    {
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        handlePermissionsResult(requestCode, permissions, grantResults,
+
+
+        handlePermissionsResult(
+            requestCode, permissions, grantResults,
             onPermissionGranted = {
                 setUpDetector()
+                camera_surface_view.visibility = View.VISIBLE
                 createDialog("חזור אחורה ושוב לחץ על סרוק(רק בפעם הראשונה...)")
             },
             onPermissionDenied = {
@@ -187,6 +190,7 @@ class ScannerFragment : Fragment(), View.OnClickListener {
     }
 
 
+
     private fun createDialog(msg: String) {
         val builder = AlertDialog.Builder(context)
         builder.setMessage(msg)
@@ -196,7 +200,7 @@ class ScannerFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.close_button -> findNavController().navigateUp()
+            //  R.id.close_button -> findNavController().navigateUp()
             R.id.flash_button -> {
                 flash_button.let {
                     if (it.isSelected) {
@@ -208,6 +212,12 @@ class ScannerFragment : Fragment(), View.OnClickListener {
                     }
                 }
             }
+            R.id.button_details -> {
+                Log.d(TAG, "button clicked")
+                Log.d(TAG, item.name ?: "no name")
+                ScannerBottomSheet(item)
+                    .show(parentFragmentManager, TAG)
+            }
         }
     }
 
@@ -215,6 +225,4 @@ class ScannerFragment : Fragment(), View.OnClickListener {
         super.onResume()
         flash_button.isSelected = false
     }
-
-
 }

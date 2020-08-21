@@ -38,7 +38,6 @@ android {
                 implementation 'androidx.preference:preference:1.1.1'
 
 
-
                 //firebase
                 //implementation 'com.google.firebase:firebase-ml-vision'
                 implementation 'com.google.firebase:firebase-storage-ktx'

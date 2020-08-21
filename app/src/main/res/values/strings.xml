@@ -1,28 +1,36 @@
 <resources>
-    <string name="app_name">Barcode Scanner</string>
+    <!--    //app name-->
+    <string name="app_name">סורק ברקודים</string>
 
     <!-- Strings used for fragments for navigation -->
-    <string name="home_fragment_label">Home Fragment</string>
-    <string name="scanner_fragment_label">Scanner Fragment</string>
+    <string name="scanner_fragment_label">סורק ברקוד</string>
+    <string name="search_result_fragment_label">חיפוש</string>
+    <string name="search_fragment_label">חיפוש</string>
 
 
+    <!--    //permission-->
     <string name="permission_required_text">\"Permission Required\"</string>
 
+    <!--    // updated data label-->
     <string name="saved_last_updated_time_key">saved_last_updated_time_key</string>
     <string name="saved_updated_date_label_key">saved_updated_date_label_key</string>
 
+
     <string name="scan_barcode_heb">סרוק ברקוד</string>
+
+    <!--//bottom navigation-->
     <string name="scan_button_title">סרוק</string>
+    <string name="title_search">חפש</string>
 
     <!--    scanner fragment action bar-->
-    <string name="cd_close_button">back</string>
+    <!--    <string name="cd_close_button">back</string>-->
     <string name="cd_flash_button">flash button</string>
 
     <!--    menu-->
     <string name="action_settings">הגדרות</string>
 
     <!--    settings-->
-    <string name="settings_title">Settings</string>
+    <string name="settings_title">הגדרות</string>
 
     <string name="pref_key_enable_sound">sound</string>
     <string name="pref_title_enable_sound">צליל קופה</string>
@@ -32,5 +40,43 @@
 
     <string name="pref_key_enable_cost">cost</string>
     <string name="pref_title_enable_cost">כולל עלות ורווח</string>
+
+    <string name="pref_key_dark_theme">dark_theme</string>
+    <string name="pref_title_dark_theme">עיצוב</string>
+    <string name="auto_theme_value">auto</string>
+    <string name="dark_theme_value">dark</string>
+    <string name="default_theme_value">dark</string>
+    <string name="light_theme_value">light</string>
+
+    <!--    bottom sheet info-->
+    <string name="cost_item_bottom_sheet">₪%1$s</string>
+    <string name="price_item_bottom_sheet">₪%1$s</string>
+    <string name="profit_item_bottom_sheet">%1$s%%</string>
+
+    <!--    scanner item info-->
+    <string name="price_item_scanner_info">₪%1$s</string>
+
+    <string name="search">חפש</string>
+    <string name="search_hint_menu">חיפוש חופשי</string>
+    <string name="sort">מיין לפי</string>
+    <string name="sort_by_key">sort_by_key</string>
+    <string name="order">סדר</string>
+    <string name="item_not_found">פריט לא נמצא</string>
+    <string name="see_more">ראה עוד</string>
+    <string name="vendor">ספק</string>
+    <string name="all_items">כל הפריטים</string>
+    <string name="search_input_helper_text">חלק משם או ברקוד</string>
+    <string name="sum_item">"סה"כ פריטים: %1$d"</string>
+    <string name="profit">רווח</string>
+    <string name="sell">מכירה</string>
+    <string name="cost">עלות</string>
+    <string name="description">תיאור</string>
+    <string name="item_code">קוד פריט</string>
+    <string name="store">חנות</string>
+    <string name="inventory">מלאי</string>
+    <string name="warehouse">מחסן</string>
+    <string name="vendors">ספקים</string>
+    <string name="additional_barcodes">ברקודים נוספים</string>
+    <string name="inventory_info">מלאי חנות: %1$d</string>
 
 </resources>

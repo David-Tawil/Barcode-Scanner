@@ -2,13 +2,49 @@ package com.example.barcodescanner.utilities
 
 import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.hardware.Camera
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.view.inputmethod.InputMethodManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.gms.vision.CameraSource
 import java.lang.reflect.Field
+
 object UtilTools {
+
+    internal fun requestRuntimePermissions(activity: Activity) {
+
+        val allNeededPermissions = getRequiredPermissions(activity).filter {
+            ContextCompat.checkSelfPermission(activity, it) != PackageManager.PERMISSION_GRANTED
+        }
+
+        if (allNeededPermissions.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                activity, allNeededPermissions.toTypedArray(), /* requestCode= */ 0
+            )
+        }
+    }
+
+    internal fun allPermissionsGranted(context: Context): Boolean = getRequiredPermissions(context)
+        .all { ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED }
+
+    private fun getRequiredPermissions(context: Context): Array<String> {
+        return try {
+            val info = context.packageManager.getPackageInfo(
+                context.packageName,
+                PackageManager.GET_PERMISSIONS
+            )
+            val ps = info.requestedPermissions
+            if (ps != null && ps.isNotEmpty()) ps else arrayOf()
+        } catch (e: Exception) {
+            arrayOf()
+        }
+    }
+
+
     fun vibrate(activity: Activity?) {
         @Suppress("DEPRECATION")
         when {
@@ -21,7 +57,7 @@ object UtilTools {
                     VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE)
                 )
             else ->
-                (activity?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator).vibrate(150)
+                (activity?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator).vibrate(300)
         }
     }
 
@@ -69,5 +105,26 @@ object UtilTools {
             }
         }
         return null
+    }
+
+    fun getProfit(cost: Double?, price: Double?): Double {
+        return if (cost != null && price != null)
+            (price - cost * VAT) / price
+        else
+            0.0
+
+    }
+
+    fun hideKeyboard(activity: Activity) {
+        val inputMethodManager =
+            activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        // Check if no view has focus
+        val currentFocusedView = activity.currentFocus
+        currentFocusedView?.let {
+            inputMethodManager.hideSoftInputFromWindow(
+                currentFocusedView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS
+            )
+        }
     }
 }
