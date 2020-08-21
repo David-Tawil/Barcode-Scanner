@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_scanner"
+        android:icon="@drawable/ic_scan"
+        android:title="@string/scan_button_title" />
+
+    <item
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/ic_search_24px"
+        android:title="@string/title_search" />
+
+</menu>

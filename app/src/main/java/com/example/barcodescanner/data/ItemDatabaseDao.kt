@@ -33,16 +33,42 @@ interface ItemDatabaseDao {
      * Selects and returns all rows in the table,
      * sorted by start time in descending order.
      */
-    @Query("SELECT * FROM items_table ORDER BY name ASC")
+    @Query("SELECT * FROM items_table group by code")
     fun getAllItems(): List<Item>
 
     @Query("SELECT count(code) FROM items_table ")
-    fun countItems() : Int?
+    fun countItems(): Int?
 
     @Query("SELECT * FROM items_table WHERE barcode1= :barcode")
-    fun getBarcode1(barcode: String): List<Item>
+    fun getItemBarcode1(barcode: String): List<Item>
 
     @Query("SELECT * FROM items_table WHERE barcode2= :barcode")
-    fun getBarcode2(barcode: String): List<Item>
+    fun getItemBarcode2(barcode: String): List<Item>
+
+
+    @Query("SELECT vendor FROM ITEMS_TABLE GROUP BY vendor order by vendor desc")
+    fun getVendorsList(): List<String?>
+
+    @Query(
+        """
+            select * from items_table 
+            where vendor LIKE  '%'||:vendor||'%' and 
+                (name LIKE '%'||:searchKeyStr||'%' or
+                code LIKE '%'||:searchKeyStr||'%' or 
+                barcode1  LIKE '%'||:searchKeyStr||'%' or
+                barcode2 LIKE '%'||:searchKeyStr||'%') 
+            group by code"""
+    )
+    fun getItems(vendor: String = "", searchKeyStr: String = ""): List<Item>
+
+
+    @Query("select quantity from items_table where code= :itemCode and storage= :storage ")
+    fun getInventory(itemCode: String, storage: Int): Int
+
+    @Query("select barcode1 from items_table where code= :itemCode group by barcode1 ")
+    fun getBarcode1sList(itemCode: String): List<String?>
+
+    @Query("select barcode2 from items_table where code= :itemCode group by barcode2 ")
+    fun getBarcodes2List(itemCode: String): List<String?>
 
 }

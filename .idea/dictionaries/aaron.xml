@@ -3,7 +3,9 @@
     <words>
       <w>barcodes</w>
       <w>barcodescanner</w>
+      <w>dataset</w>
       <w>textview</w>
+      <w>vert</w>
     </words>
   </dictionary>
 </component>

@@ -14,8 +14,12 @@ object PreferenceUtil {
     fun isVibrationEnabled(context: Context): Boolean =
         getBooleanPref(context, R.string.pref_key_enable_vibration, true)
 
-    fun isCostEnabled(context: Context): Boolean =
-        getBooleanPref(context, R.string.pref_key_enable_cost, false)
+    fun themeMode(context: Context): String? =
+        PreferenceManager.getDefaultSharedPreferences(context)
+            .getString(
+                context.resources.getString(R.string.pref_key_dark_theme),
+                context.resources.getString((R.string.default_theme_value))
+            )
 
 
     private fun getBooleanPref(

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:background="@drawable/custom_ripple"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/item_title_row_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:textDirection="rtl"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/item_code_row_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/item_price_row_text_view"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="טסט" />
+
+    <TextView
+        android:id="@+id/item_code_row_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:textAlignment="textEnd"
+
+        android:textDirection="ltr"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/item_price_row_text_view"
+        app:layout_constraintTop_toBottomOf="@id/item_title_row_text_view"
+        tools:text="729000101019" />
+
+    <TextView
+        android:id="@+id/item_price_row_text_view"
+
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+
+        android:gravity="start|center_vertical"
+        android:layoutDirection="ltr"
+        android:singleLine="true"
+        android:textDirection="ltr"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/item_title_row_text_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="₪19.90" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
