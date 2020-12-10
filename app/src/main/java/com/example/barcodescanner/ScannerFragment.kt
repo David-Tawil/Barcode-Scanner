@@ -65,9 +65,9 @@ class ScannerFragment : Fragment(), View.OnClickListener {
 
              }
          )*/
-        while (!UtilTools.allPermissionsGranted(requireContext())) {
-            UtilTools.requestRuntimePermissions(requireActivity())
-        }
+         while (!UtilTools.allPermissionsGranted(requireContext())) {
+             UtilTools.requestRuntimePermissions(requireActivity())
+         }
         setUpDetector()
         camera_surface_view.visibility = View.VISIBLE
 
@@ -109,11 +109,14 @@ class ScannerFragment : Fragment(), View.OnClickListener {
         override fun receiveDetections(detections: Detector.Detections<Barcode>?) {
             if (detections != null && detections.detectedItems.isNotEmpty()) {
                 val barcodes: SparseArray<Barcode> = detections.detectedItems
+
                 val barcode = barcodes.valueAt(0)
                 if (lastBarcode == barcode.rawValue) return // same barcode - ignore
                 lastBarcode = barcode.rawValue
                 val rawValue: String =
-                    if (barcode.rawValue.startsWith("]C1")) barcode.rawValue.substring(3) else barcode.rawValue
+                    if (barcode.rawValue.startsWith("]C1")) barcode.rawValue.substring(3) else barcode.rawValue.trimStart(
+                        '0'
+                    )
 
                 if (PreferenceUtil.isVibrationEnabled(requireContext()))
                     UtilTools.vibrate(activity)
