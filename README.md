@@ -10,7 +10,7 @@ This app uses the following libraries
 
 Screenshots
 -----------
-![Home]<img src="screenshots/home.png" width="240" height="501">
+<img src="screenshots/home.png" width="240" height="501" alt="Home">
 ![Scan Barcode]<img src="screenshots/scanner.png" width="240" height="501">
 ![Item Info]<img src="screenshots/info.png" width="240" height="501">
 
