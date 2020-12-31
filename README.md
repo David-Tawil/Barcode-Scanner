@@ -11,7 +11,7 @@ This app uses the following libraries
 Screenshots
 -----------
 
-![Home](screenshots/home.jpg "Home")
-![Scan Barcode](screenshots/scanner.jpg "Scan Barcode")
-![Item Info](screenshots/search.jpg "Item Info")
+![Home](screenshots/home.png "Home")
+![Scan Barcode](screenshots/scanner.png "Scan Barcode")
+![Item Info](screenshots/info.png "Item Info")
 
