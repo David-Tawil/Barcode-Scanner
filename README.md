@@ -10,8 +10,6 @@ This app uses the following libraries
 
 Screenshots
 -----------
-<img src="screenshots/home.png" width="240" height="501" alt="Home">
-<img src="screenshots/scanner.png" width="240" height="501">
-<img src="screenshots/info.png" width="240" height="501">
+<img src="screenshots/home.png" width="240" height="501" alt="Home"><img src="screenshots/scanner.png" width="240" height="501"><img src="screenshots/info.png" width="240" height="501">
 
 
