@@ -11,7 +11,7 @@ This app uses the following libraries
 Screenshots
 -----------
 ![Home]<img src="screenshots/home.png" width="240" height="501">
-![Scan Barcode]<img src="https://github.com/David-Tawil/Barcode-Scanner/blob/master/screenshots/scanner.png" width="240" height="501">
-![Item Info]<img src="https://github.com/David-Tawil/Barcode-Scanner/blob/master/screenshots/info.png" width="240" height="501">
+![Scan Barcode]<img src="screenshots/scanner.png" width="240" height="501">
+![Item Info]<img src="screenshots/info.png" width="240" height="501">
 
 
