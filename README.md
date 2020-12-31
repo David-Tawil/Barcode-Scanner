@@ -12,7 +12,6 @@ Screenshots
 -----------
 
 ![Home](screenshots/home.jpg "Home")
-<!--
-![Scan Barcode](screenshots/scan_barcode.png "Scan Barcode")
-![Item Info](screenshots/item_info.png "Item Info")-->
+![Scan Barcode](screenshots/scanner.jpg "Scan Barcode")
+![Item Info](screenshots/search.jpg "Item Info")
 
