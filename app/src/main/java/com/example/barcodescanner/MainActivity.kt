@@ -16,8 +16,12 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.example.barcodescanner.settings.PreferenceUtil
 import com.example.barcodescanner.settings.SettingsActivity
+import com.example.barcodescanner.utilities.UtilTools
 import com.example.barcodescanner.viewModel.ItemsModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -78,6 +82,43 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
+            R.id.action_update_data -> {
+                GlobalScope.launch {
+                    if (ItemsModel().newDataAvail(this@MainActivity)) {
+                        runOnUiThread {
+                            MaterialAlertDialogBuilder(
+                                this@MainActivity,
+                                R.style.MaterialAlertDialog__Center
+                            )
+                                .setTitle("test")
+                                .setMessage("new data avail")
+                                .setNeutralButton(getString(R.string.ok), null)
+                                .show()
+                        }
+                    } else {
+                        runOnUiThread {
+                            val lastTime = this@MainActivity.getPreferences(MODE_PRIVATE)
+                                .getLong(getString(R.string.saved_last_updated_time_key), 0)
+
+                            MaterialAlertDialogBuilder(
+                                this@MainActivity,
+                                R.style.MaterialAlertDialog__Center
+                            )
+                                .setTitle(getString(R.string.no_update_avail))
+                                .setMessage(
+                                    getString(R.string.last_update) + " " + UtilTools.getReadableRelativeDate(
+                                        applicationContext,
+                                        lastTime
+                                    )
+                                )
+                                .setNeutralButton(getString(R.string.ok), null)
+                                .show()
+                        }
+                    }
+                }
+                return true
+            }
+
             R.id.action_settings -> {
                 startActivity(Intent(this, SettingsActivity::class.java))
                 return true
@@ -101,5 +142,6 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             recreate()
         }
     }
+
 
 }

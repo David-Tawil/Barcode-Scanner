@@ -7,11 +7,14 @@ import android.hardware.Camera
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.text.format.DateUtils
 import android.view.inputmethod.InputMethodManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.vision.CameraSource
 import java.lang.reflect.Field
+import java.text.SimpleDateFormat
+import java.util.*
 
 object UtilTools {
 
@@ -127,4 +130,29 @@ object UtilTools {
             )
         }
     }
+
+    fun getReadableRelativeDate(context: Context, millis: Long): String {
+
+        var str = ""
+
+        str += when {
+            DateUtils.isToday(millis) -> {
+                "היום "
+            }
+            DateUtils.isToday(millis + DateUtils.DAY_IN_MILLIS) -> {
+                "אתמול "
+            }
+            Date(Calendar.getInstance().timeInMillis).before(Date(millis + DateUtils.DAY_IN_MILLIS * 7)) -> {
+                DateUtils.formatDateTime(context, millis, DateUtils.FORMAT_SHOW_WEEKDAY)
+            }
+            else -> {
+                // val flags = DateUtils.FORMAT_NO_YEAR or DateUtils.FORMAT_NUMERIC_DATE
+                //DateUtils.formatDateTime(context,millis,flags)
+                SimpleDateFormat("MM/dd", Locale.getDefault()).format(millis)
+            }
+        }
+        str += " ${DateUtils.formatDateTime(context, millis, DateUtils.FORMAT_SHOW_TIME)}"
+        return str
+    }
+    //SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault()).format(newTime)
 }

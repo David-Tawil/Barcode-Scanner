@@ -79,4 +79,9 @@
     <string name="additional_barcodes">ברקודים נוספים</string>
     <string name="inventory_info">מלאי חנות: %1$d</string>
 
+    <string name="action_update">עדכון</string>
+    <string name="no_update_avail">אין עידכונים</string>
+    <string name="last_update">עידכון אחרון:</string>
+    <string name="ok">אוקיי</string>
+
 </resources>
