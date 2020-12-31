@@ -10,11 +10,8 @@ This app uses the following libraries
 
 Screenshots
 -----------
-![Home]<img src="https://github.com/David-Tawil/Barcode-Scanner/blob/master/screenshots/home.png" width="240" height="501">
+![Home]<img src="screenshots/home.png" width="240" height="501">
 ![Scan Barcode]<img src="https://github.com/David-Tawil/Barcode-Scanner/blob/master/screenshots/scanner.png" width="240" height="501">
 ![Item Info]<img src="https://github.com/David-Tawil/Barcode-Scanner/blob/master/screenshots/info.png" width="240" height="501">
 
-![Home](screenshots/home.png "Home")
-![Scan Barcode](screenshots/scanner.png "Scan Barcode")
-![Item Info](screenshots/info.png "Item Info")
 
