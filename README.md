@@ -10,7 +10,7 @@ This app uses the following libraries
 
 Screenshots
 -----------
-
+<img src="https://github.com/David-Tawil/Barcode-Scanner/blob/master/screenshots/home.png" width="240" height="501">
 ![Home](screenshots/home.png "Home")
 ![Scan Barcode](screenshots/scanner.png "Scan Barcode")
 ![Item Info](screenshots/info.png "Item Info")
