@@ -11,6 +11,8 @@ This app uses the following libraries
 Screenshots
 -----------
 <img src="screenshots/home.png" width="240" height="501" alt="Home">    
-<img src="screenshots/scanner.png" width="240" height="501" alt="Scanner">      <img src="screenshots/info.png" width="240" height="501" alt="Info">
+<img src="screenshots/scanner.png" width="240" height="501" alt="Scanner">      
+<img src="screenshots/info.png" width="240" height="501" alt="Info">
+![TEST | 240x501](screenshots/home.png)
 
 
