@@ -17,6 +17,8 @@ Screenshots
   <img src="screenshots/search.png" width="240" height="501" alt="Search">
   <img src="screenshots/list.png" width="240" height="501" alt="List">
 </p>
-
+<p align="center">
+  <img src="screenshots/sample.gif" width="240" height="501" alt="Home">    
+\</p>
 
 
