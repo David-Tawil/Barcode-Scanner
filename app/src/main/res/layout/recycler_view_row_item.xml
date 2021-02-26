@@ -22,7 +22,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_price_row_text_view"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="טסט" />
+        tools:text="טסט נסיון ארוך מאוד של פריט לא פשוט ומוצלח מאוד מאוד" />
 
     <TextView
         android:id="@+id/item_code_row_text_view"
@@ -53,6 +53,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="₪19.90" />
+
+    <TextView
+        android:id="@+id/item_stock_row_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:singleLine="true"
+        android:textSize="15sp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/item_title_row_text_view"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_price_row_text_view"
+
+        tools:text="24 במלאי" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -43,6 +43,9 @@ class SearchResultFragment : Fragment(), RecyclerViewAdapter.OnItemListener {
 
         val vendor = SearchResultFragmentArgs.fromBundle(requireArguments()).vendor
         val searchKey: String = SearchResultFragmentArgs.fromBundle(requireArguments()).searchKey
+        val onlyInStock: Boolean =
+            SearchResultFragmentArgs.fromBundle(requireArguments()).onlyInStock
+
 
         database = ItemDatabase.getInstance(requireContext()).itemDatabaseDao
 
@@ -50,6 +53,10 @@ class SearchResultFragment : Fragment(), RecyclerViewAdapter.OnItemListener {
             database.getAllItems()
         else
             database.getItems(vendor, searchKey)
+
+        if (onlyInStock) {
+            items = items.filter { it.storage == 1 && it.quantity != null && it.quantity > 0 }
+        }
         setHasOptionsMenu(true)
     }
 
@@ -199,6 +206,7 @@ class SearchResultFragment : Fragment(), RecyclerViewAdapter.OnItemListener {
                     1 -> SortBy.CODE
                     2 -> SortBy.COST
                     3 -> SortBy.PRICE
+                    4 -> SortBy.STOCK
                     else -> SortBy.NAME
                 }
                 recyclerViewAdapter.sortBy(sortBy)

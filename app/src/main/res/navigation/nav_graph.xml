@@ -34,6 +34,9 @@
         <argument
             android:name="searchKey"
             app:argType="string" />
+        <argument
+            android:name="onlyInStock"
+            app:argType="boolean" />
         <!--
                 <action
                     android:id="@+id/action_search_fragment_to_scanner_fragment"

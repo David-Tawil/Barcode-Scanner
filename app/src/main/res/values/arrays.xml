@@ -15,5 +15,6 @@
         <item>קוד פריט</item>
         <item>מחיר עלות</item>
         <item>מחיר מכירה</item>
+        <item>כמות במלאי</item>
     </string-array>
 </resources>

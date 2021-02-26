@@ -13,7 +13,6 @@
 
     <!--    // updated data label-->
     <string name="saved_last_updated_time_key">saved_last_updated_time_key</string>
-    <string name="saved_updated_date_label_key">saved_updated_date_label_key</string>
 
 
     <string name="scan_barcode_heb">סרוק ברקוד</string>
@@ -81,7 +80,12 @@
 
     <string name="action_update">עדכון</string>
     <string name="no_update_avail">אין עידכונים</string>
-    <string name="last_update">עידכון אחרון:</string>
+    <string name="last_update">עידכון אחרון: %1$s</string>
     <string name="ok">אוקיי</string>
+    <string name="thumb_up">אחלה &#128077;</string>
+    <string name="checkbox_only_in_stock">רק במלאי</string>
+    <string name="update_success">עודכן בהצלחה</string>
+    <string name="update_data_error_msg">משהו השתבש אנא נסה שנית מאוחר יותר</string>
+    <string name="updating_pls_wait_msg">מתעדכן… אנא המתן</string>
 
 </resources>

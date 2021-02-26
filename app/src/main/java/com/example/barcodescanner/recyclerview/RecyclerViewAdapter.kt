@@ -53,6 +53,7 @@ class RecyclerViewAdapter(
         val itemTitleText: TextView = v.findViewById(R.id.item_title_row_text_view)
         val itemPriceText: TextView = v.findViewById(R.id.item_price_row_text_view)
         val itemCodeText: TextView = v.findViewById(R.id.item_code_row_text_view)
+        val itemStockText: TextView = v.findViewById(R.id.item_stock_row_text_view)
 
         init {
             v.setOnClickListener(this)
@@ -83,6 +84,13 @@ class RecyclerViewAdapter(
         val priceText =
             "₪${DecimalFormat("0.00").format(itemsFilterResults[position].price ?: 0.0)}"
         viewHolder.itemPriceText.text = priceText
+
+        val quantity = itemsList.filter { it.storage == 1 }
+            .find { it.code == itemsFilterResults[position].code }?.quantity
+
+        val quantityText = quantity?.toString() ?: "0"
+        viewHolder.itemStockText.text = quantityText.plus(" במלאי")
+
         viewHolder.itemCodeText.text = itemsFilterResults[position].code
     }
 
@@ -117,8 +125,8 @@ class RecyclerViewAdapter(
 
     private fun filterOriginalList(constraint: CharSequence): List<Item> {
         return itemsSorted.filter {
-            (it.name?.contains(constraint) ?: false) ||
-                    (it.vendor?.contains(constraint) ?: false) ||
+            (it.name?.contains(constraint, true) ?: false) ||
+                    (it.vendor?.contains(constraint, true) ?: false) ||
                     it.code.contains(constraint) ||
                     (it.barcode1?.contains(constraint) ?: false) ||
                     (it.barcode2?.contains(constraint) ?: false)
@@ -147,6 +155,11 @@ class RecyclerViewAdapter(
                 this.sortBy = SortBy.PRICE
                 itemsSorted = itemsList.sortedBy { it.price }
                 itemsFilterResults = itemsFilterResults.sortedBy { it.price }
+            }
+            SortBy.STOCK -> {
+                this.sortBy = SortBy.STOCK
+                itemsSorted = itemsList.sortedByDescending { it.quantity }
+                itemsFilterResults = itemsFilterResults.sortedByDescending { it.quantity }
             }
         }
         ascending = true
@@ -191,8 +204,19 @@ class RecyclerViewAdapter(
                     itemsFilterResults = itemsFilterResults.sortedBy { it.price }
                 }
             }
+            SortBy.STOCK -> {
+                if (ascending) {
+                    itemsSorted = itemsList.sortedBy { it.quantity }
+                    itemsFilterResults = itemsFilterResults.sortedBy { it.quantity }
+                } else {
+                    itemsSorted = itemsList.sortedByDescending { it.quantity }
+                    itemsFilterResults = itemsFilterResults.sortedByDescending { it.quantity }
+                }
+            }
+
         }
         notifyDataSetChanged()
         ascending = ascending.not()
     }
+
 }
