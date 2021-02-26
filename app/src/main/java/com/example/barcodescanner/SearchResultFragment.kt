@@ -208,6 +208,7 @@ class SearchResultFragment : Fragment(), RecyclerViewAdapter.OnItemListener {
                     2 -> SortBy.COST
                     3 -> SortBy.PRICE
                     4 -> SortBy.STOCK
+                    5 -> SortBy.PROFIT
                     else -> SortBy.NAME
                 }
                 recyclerViewAdapter.sortBy(sortBy)

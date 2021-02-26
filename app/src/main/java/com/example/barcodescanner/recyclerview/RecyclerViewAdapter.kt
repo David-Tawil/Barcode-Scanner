@@ -13,6 +13,7 @@ import com.example.barcodescanner.R
 import com.example.barcodescanner.data.Item
 import com.example.barcodescanner.utilities.SortBy
 import com.example.barcodescanner.utilities.TAG
+import com.example.barcodescanner.utilities.UtilTools
 import java.text.DecimalFormat
 
 /**
@@ -160,7 +161,16 @@ class RecyclerViewAdapter(
                 this.sortBy = SortBy.STOCK
                 itemsSorted = itemsList.sortedByDescending { it.quantity }
                 itemsFilterResults = itemsFilterResults.sortedByDescending { it.quantity }
+
+
             }
+            SortBy.PROFIT -> {
+                this.sortBy = SortBy.PROFIT
+                itemsSorted = itemsList.sortedBy { UtilTools.getProfit(it.cost, it.price) }
+                itemsFilterResults =
+                    itemsFilterResults.sortedBy { UtilTools.getProfit(it.cost, it.price) }
+            }
+
         }
         ascending = true
         notifyDataSetChanged()
@@ -211,6 +221,22 @@ class RecyclerViewAdapter(
                 } else {
                     itemsSorted = itemsList.sortedByDescending { it.quantity }
                     itemsFilterResults = itemsFilterResults.sortedByDescending { it.quantity }
+                }
+            }
+            SortBy.PROFIT -> {
+                if (ascending) {
+                    itemsSorted =
+                        itemsList.sortedByDescending { UtilTools.getProfit(it.cost, it.price) }
+                    itemsFilterResults = itemsFilterResults.sortedByDescending {
+                        UtilTools.getProfit(
+                            it.cost,
+                            it.price
+                        )
+                    }
+                } else {
+                    itemsSorted = itemsList.sortedBy { UtilTools.getProfit(it.cost, it.price) }
+                    itemsFilterResults =
+                        itemsFilterResults.sortedBy { UtilTools.getProfit(it.cost, it.price) }
                 }
             }
 

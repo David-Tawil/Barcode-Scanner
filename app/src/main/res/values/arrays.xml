@@ -16,5 +16,6 @@
         <item>מחיר עלות</item>
         <item>מחיר מכירה</item>
         <item>כמות במלאי</item>
+        <item>רווח</item>
     </string-array>
 </resources>

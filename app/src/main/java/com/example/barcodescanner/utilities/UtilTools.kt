@@ -117,7 +117,6 @@ object UtilTools {
             (price - cost * VAT) / price
         else
             0.0
-
     }
 
     fun hideKeyboard(activity: Activity) {
