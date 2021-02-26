@@ -37,9 +37,9 @@ class SearchResultFragment : Fragment(), RecyclerViewAdapter.OnItemListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //setting the order by preference to default by name (0 value)
+        //setting the order by preference to default by price (3 value)
         requireActivity().getPreferences(Context.MODE_PRIVATE)
-            .edit { putInt(resources.getString(R.string.sort_by_key), 0) }
+            .edit { putInt(resources.getString(R.string.sort_by_key), 3) }
 
         val vendor = SearchResultFragmentArgs.fromBundle(requireArguments()).vendor
         val searchKey: String = SearchResultFragmentArgs.fromBundle(requireArguments()).searchKey
@@ -57,6 +57,7 @@ class SearchResultFragment : Fragment(), RecyclerViewAdapter.OnItemListener {
         if (onlyInStock) {
             items = items.filter { it.storage == 1 && it.quantity != null && it.quantity > 0 }
         }
+
         setHasOptionsMenu(true)
     }
 

@@ -30,12 +30,12 @@ class RecyclerViewAdapter(
 ) :
     RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(), Filterable {
 
-    private var sortBy = SortBy.NAME
+    private var sortBy = SortBy.PRICE
 
     var itemsFilterResults: List<Item>
         private set
 
-    private var itemsSorted: List<Item> = itemsList.sortedBy { it.name }
+    private var itemsSorted: List<Item> = itemsList.sortedBy { it.price }
 
     private var ascending = true
 
