@@ -4,7 +4,7 @@ const val ITEM_DATA_FILENAME = "items.xml"
 const val VAT = 1.17
 
 enum class SortBy {
-    NAME, CODE, COST, PRICE
+    NAME, CODE, COST, PRICE, STOCK
 }
 
 val Any.TAG: String

@@ -1,12 +1,11 @@
 package com.example.barcodescanner
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -33,16 +32,19 @@ class SearchFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         //last time data updated
-        val updatedLabel = requireActivity().getPreferences(Context.MODE_PRIVATE)
-            .getString(getString(R.string.saved_updated_date_label_key), "")
-        view.findViewById<TextView>(R.id.textview_updated_Label).text = updatedLabel
+        val lastTime = requireActivity().getPreferences(AppCompatActivity.MODE_PRIVATE)
+            .getLong(getString(R.string.saved_last_updated_time_key), 0)
+        textview_updated_Label.text = getString(
+            R.string.last_update,
+            UtilTools.getReadableRelativeDate(requireContext(), lastTime)
+        )
 
 
         search_button.setOnClickListener(this)
 
-
         val adapter = ArrayAdapter(requireContext(), R.layout.row_list_vendors, vendors)
         autocomplete_vendor.setAdapter(adapter)
+        autocomplete_vendor.setOnItemClickListener { _, _, _, _ -> autocomplete_vendor.showDropDown() }
 
         //text listener to change button text description
         setTextListener()
@@ -80,11 +82,13 @@ class SearchFragment : Fragment(), View.OnClickListener {
                 findNavController().navigate(
                     SearchFragmentDirections.actionSearchFragmentToSearchResultFragment(
                         autocomplete_vendor.text.toString(),
-                        search_input_text.text.toString()
+                        search_input_text.text.toString(),
+                        checkbox_only_in_stock.isChecked
                     )
                 )
             }
         }
     }
+
 
 }

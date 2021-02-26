@@ -9,12 +9,11 @@ import com.example.barcodescanner.data.ItemDatabase
 import com.example.barcodescanner.data.ItemDatabaseDao
 import com.example.barcodescanner.utilities.ITEM_DATA_FILENAME
 import com.example.barcodescanner.utilities.ItemsXmlParser
+import com.example.barcodescanner.utilities.TAG
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class ItemsModel {
@@ -37,8 +36,6 @@ class ItemsModel {
                     itemDatabase.insertAll(items)
                     activity.getPreferences(Context.MODE_PRIVATE).edit {
                         putLong(activity.applicationContext.getString(R.string.saved_last_updated_time_key),newTime)
-                        putString(activity.applicationContext.getString(R.string.saved_updated_date_label_key),
-                            "עדכון אחרון ${SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault()).format(newTime)}")
                         apply()
                     }
 
@@ -64,7 +61,41 @@ class ItemsModel {
         return dataAvail
     }
 
-    companion object {
-        const val TAG = "ItemsModel"
+    suspend fun updateData(activity: Activity) {
+        val itemDatabase: ItemDatabaseDao =
+            ItemDatabase.getInstance(activity.applicationContext).itemDatabaseDao
+
+        val destinationFile =
+            File(activity.applicationContext.filesDir.toString() + "/" + "fileData.xml")
+
+        val metadata = xmlRef.metadata.await()
+        xmlRef.getFile(destinationFile).await()
+        val items1 = ItemsXmlParser().parse(destinationFile.inputStream())
+        itemDatabase.clear()
+        itemDatabase.insertAll(items1)
+        activity.getPreferences(Context.MODE_PRIVATE).edit {
+            putLong(
+                activity.applicationContext.getString(R.string.saved_last_updated_time_key),
+                metadata.updatedTimeMillis
+            )
+            apply()
+        }
+
+        /*xmlRef.metadata.addOnSuccessListener {
+            val newTime = it.updatedTimeMillis
+            xmlRef.getFile(destinationFile).addOnSuccessListener {
+                val items = ItemsXmlParser().parse(destinationFile.inputStream())
+                itemDatabase.clear()
+                itemDatabase.insertAll(items)
+                activity.getPreferences(Context.MODE_PRIVATE).edit {
+                    putLong(activity.applicationContext.getString(R.string.saved_last_updated_time_key),newTime)
+                    apply()
+                }
+            }.addOnFailureListener { exception ->
+                exception.printStackTrace()
+            }
+        }.addOnFailureListener {
+            it.printStackTrace()
+        }*/
     }
 }

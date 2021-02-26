@@ -22,6 +22,18 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
             app:title="@string/app_name" />
 
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/update_progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+
+            android:indeterminate="true"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+
     </com.google.android.material.appbar.AppBarLayout>
 
 
