@@ -1,6 +1,8 @@
 package com.example.barcodescanner.utilities
 
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.Camera
@@ -155,4 +157,10 @@ object UtilTools {
         return str
     }
     //SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault()).format(newTime)
+
+    fun Context.copyToClipboard(text: CharSequence) {
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("label", text)
+        clipboard.setPrimaryClip(clip)
+    }
 }

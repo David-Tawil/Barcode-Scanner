@@ -125,8 +125,8 @@ class RecyclerViewAdapter(
 
     private fun filterOriginalList(constraint: CharSequence): List<Item> {
         return itemsSorted.filter {
-            (it.name?.contains(constraint) ?: false) ||
-                    (it.vendor?.contains(constraint) ?: false) ||
+            (it.name?.contains(constraint, true) ?: false) ||
+                    (it.vendor?.contains(constraint, true) ?: false) ||
                     it.code.contains(constraint) ||
                     (it.barcode1?.contains(constraint) ?: false) ||
                     (it.barcode2?.contains(constraint) ?: false)
@@ -218,4 +218,5 @@ class RecyclerViewAdapter(
         notifyDataSetChanged()
         ascending = ascending.not()
     }
+
 }
