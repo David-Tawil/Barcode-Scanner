@@ -92,16 +92,15 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             R.id.action_update_data -> {
 
                 update_progress_bar.show()
-
+                val snackbar = Snackbar.make(
+                    container,
+                    getString(R.string.updating_pls_wait_msg),
+                    Snackbar.LENGTH_INDEFINITE
+                )
                 GlobalScope.launch {
                     try {
-                        withTimeout(20000) {
+                        withTimeout(60000) {
                             if (ItemsModel().newDataAvail(this@MainActivity)) {
-                                val snackbar = Snackbar.make(
-                                    container,
-                                    getString(R.string.updating_pls_wait_msg),
-                                    Snackbar.LENGTH_INDEFINITE
-                                )
                                 snackbar.show()
                                 ItemsModel().updateData(this@MainActivity)
                                 snackbar.dismiss()
@@ -161,6 +160,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                         t.printStackTrace()
                         runOnUiThread {
                             update_progress_bar.hide()
+                            snackbar.dismiss()
                             MaterialAlertDialogBuilder(
                                 this@MainActivity,
                                 R.style.MaterialAlertDialog__Center
