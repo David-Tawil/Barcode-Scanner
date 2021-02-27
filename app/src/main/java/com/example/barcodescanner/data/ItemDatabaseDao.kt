@@ -31,7 +31,6 @@ interface ItemDatabaseDao {
 
     /**
      * Selects and returns all rows in the table,
-     * sorted by start time in descending order.
      */
     @Query("SELECT * FROM items_table group by code")
     fun getAllItems(): List<Item>
@@ -61,6 +60,18 @@ interface ItemDatabaseDao {
     )
     fun getItems(vendor: String = "", searchKeyStr: String = ""): List<Item>
 
+    @Query(
+        """
+            select * from items_table 
+            where vendor LIKE  '%'||:vendor||'%' and 
+                (name LIKE '%'||:searchKeyStr||'%' or
+                code LIKE '%'||:searchKeyStr||'%' or 
+                barcode1  LIKE '%'||:searchKeyStr||'%' or
+                barcode2 LIKE '%'||:searchKeyStr||'%') and
+                storage= :storage and quantity > 0
+            group by code"""
+    )
+    fun getItemsInStock(vendor: String = "", searchKeyStr: String = "", storage: Int): List<Item>
 
     @Query("select quantity from items_table where code= :itemCode and storage= :storage ")
     fun getInventory(itemCode: String, storage: Int): Int
@@ -70,5 +81,8 @@ interface ItemDatabaseDao {
 
     @Query("select barcode2 from items_table where code= :itemCode group by barcode2 ")
     fun getBarcodes2List(itemCode: String): List<String?>
+
+    @Query("select * from items_table where  storage= :storage and quantity > 0 group by code")
+    fun getAllItemsInStock(storage: Int): List<Item>
 
 }

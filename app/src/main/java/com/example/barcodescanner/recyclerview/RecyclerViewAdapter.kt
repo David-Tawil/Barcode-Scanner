@@ -1,7 +1,6 @@
 package com.example.barcodescanner.recyclerview
 
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +10,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.barcodescanner.R
 import com.example.barcodescanner.data.Item
+import com.example.barcodescanner.data.ItemDatabase
 import com.example.barcodescanner.utilities.SortBy
-import com.example.barcodescanner.utilities.TAG
 import com.example.barcodescanner.utilities.UtilTools
 import java.text.DecimalFormat
 
@@ -77,22 +76,18 @@ class RecyclerViewAdapter(
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        Log.d(TAG, "Element $position set.")
 
+        val database = ItemDatabase.getInstance(viewHolder.itemView.context).itemDatabaseDao
+        val item = itemsFilterResults[position]
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        viewHolder.itemTitleText.text = itemsFilterResults[position].name
+        viewHolder.itemTitleText.text = item.name
         val priceText =
-            "₪${DecimalFormat("0.00").format(itemsFilterResults[position].price ?: 0.0)}"
+            "₪${DecimalFormat("0.00").format(item.price ?: 0.0)}"
         viewHolder.itemPriceText.text = priceText
-
-        val quantity = itemsList.filter { it.storage == 1 }
-            .find { it.code == itemsFilterResults[position].code }?.quantity
-
-        val quantityText = quantity?.toString() ?: "0"
-        viewHolder.itemStockText.text = quantityText.plus(" במלאי")
-
-        viewHolder.itemCodeText.text = itemsFilterResults[position].code
+        viewHolder.itemStockText.text =
+            database.getInventory(item.code, 1).toString().plus(" במלאי")
+        viewHolder.itemCodeText.text = item.code
     }
 
     // Return the size of your dataset (invoked by the layout manager)

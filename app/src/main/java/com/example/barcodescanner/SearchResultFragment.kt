@@ -49,15 +49,10 @@ class SearchResultFragment : Fragment(), RecyclerViewAdapter.OnItemListener {
 
         database = ItemDatabase.getInstance(requireContext()).itemDatabaseDao
 
-        items = if (vendor.isEmpty() && searchKey.isEmpty())
-            database.getAllItems()
+        items = if (onlyInStock)
+            database.getItemsInStock(vendor, searchKey, 1)
         else
             database.getItems(vendor, searchKey)
-
-        if (onlyInStock) {
-            items = items.filter { it.storage == 1 && it.quantity != null && it.quantity > 0 }
-        }
-
         setHasOptionsMenu(true)
     }
 
