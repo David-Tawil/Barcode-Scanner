@@ -78,7 +78,7 @@ class ItemsXmlParser {
                 BARCODE2 -> barcode2 = readBarcode2(parser)
                 NAME -> name = readName(parser)
                 VENDOR -> vendor = readVendor(parser)
-                COST -> cost = readCost(parser)
+               /* COST -> cost = readCost(parser)*/
                 PRICE -> price = readPrice(parser)
                 STORAGE -> storage = readStorage(parser)
                 QUANTITY -> quantity = readQuantity(parser)
@@ -129,13 +129,13 @@ class ItemsXmlParser {
         return vendor
     }
 
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun readCost(parser: XmlPullParser): Double? {
-        parser.require(XmlPullParser.START_TAG,ns,COST)
-        val cost = readText(parser).toDoubleOrNull()
-        parser.require(XmlPullParser.END_TAG,ns,COST)
-        return cost
-    }
+    /*  @Throws(XmlPullParserException::class, IOException::class)
+      private fun readCost(parser: XmlPullParser): Double? {
+          parser.require(XmlPullParser.START_TAG,ns,COST)
+          val cost = readText(parser).toDoubleOrNull()
+          parser.require(XmlPullParser.END_TAG,ns,COST)
+          return cost
+      }*/
 
     @Throws(XmlPullParserException::class, IOException::class)
     private fun readPrice(parser: XmlPullParser): Double? {
