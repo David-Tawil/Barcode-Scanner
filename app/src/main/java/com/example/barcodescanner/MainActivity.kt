@@ -57,7 +57,8 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         navView.setupWithNavController(navController)
 
 
-        ItemsModel().pullDataToDB(this)
+        //ItemsModel().pullDataToDB(this)
+        launchUpdate()
     }
 
 
@@ -90,91 +91,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_update_data -> {
-
-                update_progress_bar.show()
-                val snackbar = Snackbar.make(
-                    container,
-                    getString(R.string.updating_pls_wait_msg),
-                    Snackbar.LENGTH_INDEFINITE
-                )
-                GlobalScope.launch {
-                    try {
-                        withTimeout(60000) {
-                            if (ItemsModel().newDataAvail(this@MainActivity)) {
-                                snackbar.show()
-                                ItemsModel().updateData(this@MainActivity)
-                                snackbar.dismiss()
-                                runOnUiThread {
-                                    update_progress_bar.hide()
-                                    // snackbar.dismiss()
-                                    // progress_bar_main.hide()
-                                    val lastTime = this@MainActivity.getPreferences(MODE_PRIVATE)
-                                        .getLong(getString(R.string.saved_last_updated_time_key), 0)
-
-                                    MaterialAlertDialogBuilder(
-                                        this@MainActivity,
-                                        R.style.MaterialAlertDialog__Center
-                                    )
-                                        .setTitle(getString(R.string.update_success))
-                                        .setMessage(
-                                            getString(
-                                                R.string.last_update,
-                                                UtilTools.getReadableRelativeDate(
-                                                    applicationContext,
-                                                    lastTime
-                                                )
-                                            )
-                                        )
-                                        .setNeutralButton(getString(R.string.thumb_up), null)
-                                        .show()
-                                }
-
-                            } else {
-                                runOnUiThread {
-                                    update_progress_bar.hide()
-                                    // snackbar.dismiss()
-                                    // progress_bar_main.hide()
-                                    val lastTime = this@MainActivity.getPreferences(MODE_PRIVATE)
-                                        .getLong(getString(R.string.saved_last_updated_time_key), 0)
-
-                                    MaterialAlertDialogBuilder(
-                                        this@MainActivity,
-                                        R.style.MaterialAlertDialog__Center
-                                    )
-                                        .setTitle(getString(R.string.no_update_avail))
-                                        .setMessage(
-                                            getString(
-                                                R.string.last_update,
-                                                UtilTools.getReadableRelativeDate(
-                                                    applicationContext,
-                                                    lastTime
-                                                )
-                                            )
-                                        )
-                                        .setNeutralButton(getString(R.string.ok), null)
-                                        .show()
-                                }
-                            }
-                        }
-                    } catch (t: TimeoutCancellationException) {
-                        t.printStackTrace()
-                        runOnUiThread {
-                            update_progress_bar.hide()
-                            snackbar.dismiss()
-                            MaterialAlertDialogBuilder(
-                                this@MainActivity,
-                                R.style.MaterialAlertDialog__Center
-                            )
-                                .setTitle("")
-                                .setMessage(getString(R.string.update_data_error_msg))
-                                .setNeutralButton(getString(R.string.ok), null)
-                                .show()
-                        }
-                    } catch (e: Throwable) {
-                        e.printStackTrace()
-                    }
-                }
-                return true
+                checkForUpdate()
             }
 
             R.id.action_settings -> {
@@ -182,6 +99,135 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 return true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun checkForUpdate(): Boolean {
+        update_progress_bar.show()
+        val snackbar = Snackbar.make(
+            container,
+            getString(R.string.updating_pls_wait_msg),
+            Snackbar.LENGTH_INDEFINITE
+        )
+        GlobalScope.launch {
+            try {
+                withTimeout(60000) {
+                    if (ItemsModel().newDataAvail(this@MainActivity)) {
+                        snackbar.show()
+                        ItemsModel().updateData(this@MainActivity)
+                        snackbar.dismiss()
+                        runOnUiThread {
+                            update_progress_bar.hide()
+                            // snackbar.dismiss()
+                            // progress_bar_main.hide()
+                            val lastTime = this@MainActivity.getPreferences(MODE_PRIVATE)
+                                .getLong(getString(R.string.saved_last_updated_time_key), 0)
+
+                            MaterialAlertDialogBuilder(
+                                this@MainActivity,
+                                R.style.MaterialAlertDialog__Center
+                            )
+                                .setTitle(getString(R.string.update_success))
+                                .setMessage(
+                                    getString(
+                                        R.string.last_update,
+                                        UtilTools.getReadableRelativeDate(
+                                            applicationContext,
+                                            lastTime
+                                        )
+                                    )
+                                )
+                                .setNeutralButton(getString(R.string.thumb_up), null)
+                                .show()
+                        }
+
+                    } else {
+                        runOnUiThread {
+                            update_progress_bar.hide()
+                            // snackbar.dismiss()
+                            // progress_bar_main.hide()
+                            val lastTime = this@MainActivity.getPreferences(MODE_PRIVATE)
+                                .getLong(getString(R.string.saved_last_updated_time_key), 0)
+
+                            MaterialAlertDialogBuilder(
+                                this@MainActivity,
+                                R.style.MaterialAlertDialog__Center
+                            )
+                                .setTitle(getString(R.string.no_update_avail))
+                                .setMessage(
+                                    getString(
+                                        R.string.last_update,
+                                        UtilTools.getReadableRelativeDate(
+                                            applicationContext,
+                                            lastTime
+                                        )
+                                    )
+                                )
+                                .setNeutralButton(getString(R.string.ok), null)
+                                .show()
+                        }
+                    }
+                }
+            } catch (t: TimeoutCancellationException) {
+                t.printStackTrace()
+                runOnUiThread {
+                    update_progress_bar.hide()
+                    snackbar.dismiss()
+                    MaterialAlertDialogBuilder(
+                        this@MainActivity,
+                        R.style.MaterialAlertDialog__Center
+                    )
+                        .setTitle("")
+                        .setMessage(getString(R.string.update_data_error_msg))
+                        .setNeutralButton(getString(R.string.ok), null)
+                        .show()
+                }
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
+        }
+        return true
+    }
+
+    private fun launchUpdate() {
+
+        val snackbar = Snackbar.make(
+            container,
+            getString(R.string.updating_pls_wait_msg),
+            Snackbar.LENGTH_INDEFINITE
+        )
+        GlobalScope.launch {
+            if (ItemsModel().newDataAvail(this@MainActivity)) {
+                snackbar.show()
+                update_progress_bar.show()
+                ItemsModel().updateData(this@MainActivity)
+                snackbar.dismiss()
+                runOnUiThread {
+                    update_progress_bar.hide()
+                    // snackbar.dismiss()
+                    // progress_bar_main.hide()
+                    val lastTime = this@MainActivity.getPreferences(MODE_PRIVATE)
+                        .getLong(getString(R.string.saved_last_updated_time_key), 0)
+
+                    MaterialAlertDialogBuilder(
+                        this@MainActivity,
+                        R.style.MaterialAlertDialog__Center
+                    )
+                        .setTitle(getString(R.string.update_success))
+                        .setMessage(
+                            getString(
+                                R.string.last_update,
+                                UtilTools.getReadableRelativeDate(
+                                    applicationContext,
+                                    lastTime
+                                )
+                            )
+                        )
+                        .setNeutralButton(getString(R.string.thumb_up), null)
+                        .show()
+                }
+
+            }
         }
     }
 
