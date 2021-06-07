@@ -18,10 +18,13 @@ import com.example.barcodescanner.data.ItemDatabaseDao
 import com.example.barcodescanner.settings.PreferenceUtil
 import com.example.barcodescanner.utilities.TAG
 import com.example.barcodescanner.utilities.UtilTools
+
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
+
+
 import handlePermissionsResult
 import kotlinx.android.synthetic.main.fragment_scanner.*
 import kotlinx.android.synthetic.main.scanner_action_bar.*
