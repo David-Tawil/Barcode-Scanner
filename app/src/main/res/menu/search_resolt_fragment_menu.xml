@@ -21,6 +21,11 @@
         android:icon="@drawable/ic_swap_vert_black_24dp"
         android:title="@string/order"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/stock_value_menu_item"
+
+        android:title="@string/stock_value"
+        app:showAsAction="never" />
 
 
 </menu>

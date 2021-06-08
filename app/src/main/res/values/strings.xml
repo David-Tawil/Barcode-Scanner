@@ -87,5 +87,7 @@
     <string name="update_success">עודכן בהצלחה</string>
     <string name="update_data_error_msg">משהו השתבש אנא נסה שנית מאוחר יותר</string>
     <string name="updating_pls_wait_msg">מתעדכן… אנא המתן</string>
+    <string name="stock_value">ערך מלאי</string>
+    <string name="stock_value_dialog_msg">ערך המלאי הוא: ₪%1$s</string>
 
 </resources>

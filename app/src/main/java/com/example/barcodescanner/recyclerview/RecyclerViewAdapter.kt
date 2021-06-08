@@ -240,4 +240,10 @@ class RecyclerViewAdapter(
         ascending = ascending.not()
     }
 
+    fun getTotalValue(): Number {
+        var value = 0.0
+        itemsFilterResults.forEach { value += it.quantity?.times(it.cost ?: 0.0) ?: 0.0 }
+        return value
+    }
+
 }

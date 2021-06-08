@@ -180,9 +180,29 @@ class SearchResultFragment : Fragment(), RecyclerViewAdapter.OnItemListener {
                 recyclerViewAdapter.swapOrder()
                 return true
             }
+            R.id.stock_value_menu_item -> {
+                val value = recyclerViewAdapter.getTotalValue()
+                showStockValueDialog(value)
+                return true
+            }
             else -> super.onOptionsItemSelected(item)
         }
 
+    }
+
+    private fun showStockValueDialog(value: Number) {
+        MaterialAlertDialogBuilder(
+            requireContext(),
+            R.style.MaterialAlertDialog__Center
+        )
+            .setTitle(getString(R.string.stock_value))
+            .setMessage(
+                getString(
+                    R.string.stock_value_dialog_msg, DecimalFormat("#,###").format(value)
+                )
+            )
+            .setNeutralButton(getString(R.string.ok), null)
+            .show()
     }
 
     private fun showSortDialog() {

@@ -19,7 +19,7 @@ import java.io.File
 class ItemsModel {
     private val xmlRef = Firebase.storage.getReference(ITEM_DATA_FILENAME)
 
-    fun pullDataToDB(activity : Activity){
+    /*fun pullDataToDB(activity : Activity){
         val itemDatabase : ItemDatabaseDao= ItemDatabase.getInstance(activity.applicationContext).itemDatabaseDao
 
 
@@ -46,7 +46,7 @@ class ItemsModel {
         }.addOnFailureListener {
             it.printStackTrace()
         }
-    }
+    }*/
 
     suspend fun newDataAvail(activity: Activity): Boolean {
         var dataAvail = false
